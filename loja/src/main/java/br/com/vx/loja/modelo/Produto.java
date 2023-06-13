@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /*
@@ -101,61 +102,82 @@ public class Produto {
 	private String descricao;
 	private Double preco;
 	private LocalDate dataCadastro = LocalDate.now();
+
+	/*
+	 * Desta maneira, temos a obrigação de dizer à JPA qual é a cardinalidade desse
+	 * relacionamento. Se um produto tem uma única categoria ou várias categorias, é
+	 * um para um, um para muitos, muitos para um, ou seja, qual é a cardinalidade.
+	 * Se observarmos o desenho do diagrama, veremos que, de produtos para
+	 * categorias, temos: muitos para um. Isto é, um produto tem uma única
+	 * categoria, mas uma categoria pode estar vinculada a vários produtos.
+	 * 
+	 * Então, de produtos para categorias: asterisco, 1. Que quer dizer: muitos para
+	 * um. Na JPA, para informarmos que a cardinalidade desse relacionamento é
+	 * "muitos para um", temos uma anotação, `@ManyToOne`. Ou seja, muitos produtos
+	 * estão vinculados com uma `Categoria`. Uma categoria pode ter vários produtos,
+	 * mas o produto tem uma única categoria.
+	 */
 	
-	@Enumerated(EnumType.STRING)
+	@ManyToOne
 	private Categoria categoria;
-	
-	
-	
+
+	public Produto() {
+
+	}
+
 	public Produto(String nome, String descricao, Double preco, Categoria categoria) {
-		super();
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
 		this.categoria = categoria;
 	}
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
+
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
-	
+
 	public LocalDate getDataCadastro() {
 		return dataCadastro;
 	}
+
 	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	
-	
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public String getDescricao() {
 		return descricao;
 	}
+
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
 	public Double getPreco() {
 		return preco;
 	}
+
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
-	
-	
 
 }

@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import br.com.vx.loja.dao.CategoriaDao;
 import br.com.vx.loja.dao.ProdutoDao;
 import br.com.vx.loja.modelo.Categoria;
 import br.com.vx.loja.modelo.Produto;
@@ -14,7 +15,9 @@ public class CadastroDeProdutos {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Produto celular = new Produto("Iphone xr", "Lindo e veloz", 2000.20, Categoria.CELULARES);
+		Categoria celulares = new Categoria("CELULARES");
+		
+		Produto celular = new Produto("Iphone xr", "Lindo e veloz", 2000.20, celulares);
 
 
 		/*
@@ -73,7 +76,8 @@ public class CadastroDeProdutos {
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		
-		ProdutoDao dao = new ProdutoDao(em);
+		ProdutoDao produtoDao = new ProdutoDao(em);
+		CategoriaDao categoriaDao = new CategoriaDao(em);
 
 		/*
 		 * No `persistence.xml`, na tag `persistence-unit`, além do `name`, nós temos
@@ -96,7 +100,10 @@ public class CadastroDeProdutos {
 		 * método chamado persist().
 		 */
 
-		 dao.cadastrar(celular); //isso vai virar o método da minha classe DAO em.persist(celular);
+		// cadastrando categoria no banco de dados
+		categoriaDao.cadastrar(celulares);
+		
+		 produtoDao.cadastrar(celular); //isso vai virar o método da minha classe DAO em.persist(celular);
 
 		/*
 		 * É como se disséssemos ao JPA e ao EntityManager que pegassem a
