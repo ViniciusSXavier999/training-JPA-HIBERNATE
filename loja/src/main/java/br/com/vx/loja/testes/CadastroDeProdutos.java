@@ -4,7 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import br.com.vx.loja.dao.ProdutoDao;
 import br.com.vx.loja.modelo.Produto;
+import br.com.vx.loja.util.JPAUtil;
 
 public class CadastroDeProdutos {
 
@@ -38,7 +40,8 @@ public class CadastroDeProdutos {
 		 * Persistence.createEntityManagerFactory()
 		 */
 		// ele tem um método que faz a construção do entityMANAGER
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("loja");
+		
+	//	EntityManagerFactory factory = Persistence.createEntityManagerFactory("loja");
 
 		/*
 		 * Agora precisamos descobrir como pegar o objeto `celular` e fazer
@@ -58,7 +61,21 @@ public class CadastroDeProdutos {
 		 * interface `EntityManager`.
 		 */
 
-		EntityManager em = factory.createEntityManager();
+	//	EntityManager em = factory.createEntityManager();
+
+		/*
+		 * precisaremos de um ProdutoDao dao = new ProdutoDao(em). Quando instanciamos
+		 * um ProdutoDao, nós temos que passar um em (EntityManager), e ele foi criado
+		 * em:
+		 * 
+		 * E toda a parte de transação é feita na classe, em vez de ficar na classe DAO.
+		 * Seguindo, em.persist(celular); virará dao.cadastrar(celular); (estamos
+		 * passando, portanto, o produto celular).
+		 */
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		ProdutoDao dao = new ProdutoDao(em);
 
 		/*
 		 * No `persistence.xml`, na tag `persistence-unit`, além do `name`, nós temos
@@ -81,7 +98,7 @@ public class CadastroDeProdutos {
 		 * método chamado persist().
 		 */
 
-		em.persist(celular);
+		 dao.cadastrar(celular); //isso vai virar o método da minha classe DAO em.persist(celular);
 
 		/*
 		 * É como se disséssemos ao JPA e ao EntityManager que pegassem a
@@ -90,9 +107,8 @@ public class CadastroDeProdutos {
 		 * commitar essa transação no banco de dados, em.getTransaction().commit();.
 		 */
 		em.getTransaction().commit();
-		
+
 		em.close();
-		
 
 	}
 
