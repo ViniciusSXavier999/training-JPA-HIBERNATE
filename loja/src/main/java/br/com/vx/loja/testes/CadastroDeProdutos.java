@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import br.com.vx.loja.dao.ProdutoDao;
+import br.com.vx.loja.modelo.Categoria;
 import br.com.vx.loja.modelo.Produto;
 import br.com.vx.loja.util.JPAUtil;
 
@@ -13,11 +14,8 @@ public class CadastroDeProdutos {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Produto celular = new Produto();
+		Produto celular = new Produto("Iphone xr", "Lindo e veloz", 2000.20, Categoria.CELULARES);
 
-		celular.setNome("Iphone xr");
-		celular.setDescricao("Lindo e veloz");
-		celular.setPreco(2000.20);
 
 		/*
 		 * Na JPA, não criamos manualmente o `EntityManager`. NA JPA, o padrão de
